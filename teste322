@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Aresço — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0c;
+    --surface: #141414;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #E6004F;
+    --accent2: #ff4757;
+    --text: #f0f0f0;
+    --muted: #666;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s;
+  }
+  .cursor-follower {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(12,12,12,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  #hero {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 6rem 3rem 5rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 360px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+  .hero-cta { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 1rem 2rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: #fff; color: var(--accent); transform: translateY(-2px); }
+  .btn-ghost {
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--accent); }
+
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100%;
+    gap: 3px;
+  }
+  .hero-img-grid .img-cell { background: var(--card); overflow: hidden; position: relative; }
+  .hero-img-grid .img-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%);
+    transition: transform 0.6s ease, filter 0.4s;
+  }
+  .hero-img-grid .img-cell:hover img { transform: scale(1.05); filter: grayscale(0%); }
+  .hero-img-grid .img-cell:nth-child(1) { grid-row: span 2; }
+
+  .img-placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 50%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--border);
+    letter-spacing: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .marquee-bar {
+    background: var(--accent);
+    padding: 0.75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    color: #fff;
+    padding: 0 2rem;
+  }
+  .marquee-track span.dot { color: rgba(255,255,255,0.4); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  #galeria { background: var(--bg); }
+  .gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+  .gallery-filter { display: flex; gap: 0.5rem; }
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 180px;
+    gap: 6px;
+  }
+  .gallery-item {
+    background: var(--card);
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+  }
+  .gallery-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .gallery-item:nth-child(2) { grid-column: span 4; grid-row: span 1; }
+  .gallery-item:nth-child(3) { grid-column: span 3; grid-row: span 2; }
+  .gallery-item:nth-child(4) { grid-column: span 4; grid-row: span 1; }
+  .gallery-item:nth-child(5) { grid-column: span 3; grid-row: span 1; }
+  .gallery-item:nth-child(6) { grid-column: span 4; grid-row: span 2; }
+  .gallery-item:nth-child(7) { grid-column: span 5; grid-row: span 1; }
+  .gallery-item:nth-child(8) { grid-column: span 3; grid-row: span 1; }
+  .gallery-item .g-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s ease;
+  }
+  .gallery-item:hover .g-placeholder { transform: scale(1.04); }
+  .gallery-item .g-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.2rem;
+    z-index: 2;
+  }
+  .gallery-item:hover .g-overlay { opacity: 1; }
+  .g-overlay-text {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .gc1 { background: linear-gradient(135deg, #1c1c2e, #2d2d4e); }
+  .gc2 { background: linear-gradient(135deg, #1e1e1e, #333); }
+  .gc3 { background: linear-gradient(135deg, #0f1923, #1a2e3e); }
+  .gc4 { background: linear-gradient(135deg, #1a1000, #2e1f00); }
+  .gc5 { background: linear-gradient(135deg, #1a0010, #2e001c); }
+  .gc6 { background: linear-gradient(135deg, #001a0a, #002e10); }
+  .gc7 { background: linear-gradient(135deg, #1a1a00, #2e2e00); }
+  .gc8 { background: linear-gradient(135deg, #100018, #1c0028); }
+
+  #sobre {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-visual { position: relative; height: 560px; }
+  .about-main-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 75%; height: 85%;
+    background: linear-gradient(160deg, #1e2030, #2d1f40);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  }
+  .about-accent-box {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 55%; height: 55%;
+    background: var(--accent);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .about-stat-number {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: #fff;
+    line-height: 1;
+  }
+  .about-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+  .about-bio {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #aaa;
+    margin-bottom: 2rem;
+  }
+  .about-bio strong { color: var(--text); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+  .skill-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .skill-item:hover { border-color: var(--accent); color: var(--accent); }
+  .skill-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+  #clientes { background: var(--bg); }
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5px;
+    margin-top: 3rem;
+    border: 1.5px solid var(--border);
+  }
+  .client-card {
+    background: var(--surface);
+    padding: 2rem;
+    border: 1.5px solid var(--border);
+    margin: -1.5px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .client-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.3s;
+  }
+  .client-card:hover::before { height: 100%; }
+  .client-card:hover { background: var(--card); }
+  .client-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .client-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  .client-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .client-handle { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
+  .client-quote { font-size: 0.9rem; line-height: 1.6; color: #aaa; margin-bottom: 1.5rem; }
+  .client-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .client-link:hover { gap: 0.9rem; }
+  .stars { color: var(--accent); letter-spacing: 2px; font-size: 0.75rem; margin-bottom: 0.8rem; }
+
+  #orcamento { background: var(--surface); position: relative; overflow: hidden; }
+  #orcamento::before {
+    content: 'ORÇAMENTO';
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 14vw, 14rem);
+    color: rgba(230,0,79,0.04);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 10px;
+  }
+  .orc-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .orc-tagline { font-size: 1.1rem; color: var(--muted); line-height: 1.7; margin: 1.5rem 0 2.5rem; }
+  .orc-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .orc-contact-item span:first-child { color: var(--accent); letter-spacing: 2px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { position: relative; }
+  .form-group.full { grid-column: span 2; }
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23E6004F' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  .services-check { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    cursor: none;
+    transition: all 0.2s;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+  .check-item:hover { border-color: var(--accent); color: var(--accent); }
+  .check-item input { display: none; }
+  .check-item.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .submit-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 1.2rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: none;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .submit-btn:hover { background: #fff; color: var(--accent); }
+
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 6px; color: var(--accent); }
+  .footer-links { display: flex; gap: 2rem; list-style: none; }
+  .footer-links a { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 2px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 6rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+    #sobre { grid-template-columns: 1fr; }
+    .about-visual { height: 300px; }
+    .orc-layout { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 140px; }
+    .gallery-item:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: span 1; }
+  }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .lightbox.open { opacity: 1; pointer-events: all; }
+  .lightbox-close { position: absolute; top: 2rem; right: 2rem; font-family: var(--font-display); font-size: 2.5rem; color: var(--accent); cursor: none; line-height: 1; }
+  .lightbox-content { max-width: 80vw; max-height: 80vh; font-family: var(--font-display); font-size: 4rem; color: var(--muted); letter-spacing: 8px; text-align: center; }
+
+  .notification {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 300;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .notification.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+<div class="notification" id="notification">✓ Mensagem enviada com sucesso!</div>
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">×</div>
+  <div class="lightbox-content" id="lightbox-content">FOTO</div>
+</div>
+
+<nav>
+  <div class="nav-logo">JOSEPH ARESÇO</div>
+  <ul class="nav-links">
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#orcamento">Orçamento</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Fotógrafo & Filmmaker</div>
+    <h1 class="hero-title">CAPTURANDO<br><span>MOMENTOS</span><br>REAIS</h1>
+    <p class="hero-desc">Fotografia urbana, retratos e vídeos com alma. Cada frame conta uma história que vale ser lembrada.</p>
+    <div class="hero-cta">
+      <a href="#orcamento" class="btn-primary">Solicitar Orçamento</a>
+      <a href="#galeria" class="btn-ghost">Ver Galeria →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      <div class="img-cell"><div class="img-placeholder gc1">RETRATO</div></div>
+      <div class="img-cell"><div class="img-placeholder gc3">URBANO</div></div>
+      <div class="img-cell"><div class="img-placeholder gc4">VÍDEO</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>FOTOGRAFIA</span><span class="dot">✦</span>
+    <span>RETRATOS</span><span class="dot">✦</span>
+    <span>VÍDEO</span><span class="dot">✦</span>
+    <span>ENSAIOS</span><span class="dot">✦</span>
+    <span>EVENTOS</span><span class="dot">✦</span>
+    <span>MODA</span><span class="dot">✦</span>
+    <span>URBANO</span><span class="dot">✦</span>
+    <span>LIFESTYLE</span><span class="dot">✦</span>
+    <span>FOTOGRAFIA</span><span class="dot">✦</span>
+    <span>RETRATOS</span><span class="dot">✦</span>
+    <span>VÍDEO</span><span class="dot">✦</span>
+    <span>ENSAIOS</span><span class="dot">✦</span>
+    <span>EVENTOS</span><span class="dot">✦</span>
+    <span>MODA</span><span class="dot">✦</span>
+    <span>URBANO</span><span class="dot">✦</span>
+    <span>LIFESTYLE</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<section id="galeria">
+  <div class="gallery-header reveal">
+    <div>
+      <div class="section-label">// 001 — Portfolio</div>
+      <h2 class="section-title">GALERIA</h2>
+    </div>
+    <div class="gallery-filter">
+      <button class="filter-btn active" onclick="filterGallery('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filterGallery('foto', this)">Fotos</button>
+      <button class="filter-btn" onclick="filterGallery('video', this)">Vídeos</button>
+      <button class="filter-btn" onclick="filterGallery('ensaio', this)">Ensaios</button>
+    </div>
+  </div>
+  <div class="gallery-grid reveal" id="gallery">
+    <div class="gallery-item" data-cat="foto" onclick="openLightbox('URBAN STREET #01')">
+      <div class="g-placeholder gc1"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Urban Street #01</span></div>
+    </div>
+    <div class="gallery-item" data-cat="ensaio" onclick="openLightbox('RETRATO #01')">
+      <div class="g-placeholder gc2"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Retrato #01</span></div>
+    </div>
+    <div class="gallery-item" data-cat="video" onclick="openLightbox('REEL #01')">
+      <div class="g-placeholder gc3" style="display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(230,0,79,0.5)">▶</div>
+      <div class="g-overlay"><span class="g-overlay-text">Reel #01</span></div>
+    </div>
+    <div class="gallery-item" data-cat="foto" onclick="openLightbox('STREET #02')">
+      <div class="g-placeholder gc4"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Street #02</span></div>
+    </div>
+    <div class="gallery-item" data-cat="ensaio" onclick="openLightbox('MODA #01')">
+      <div class="g-placeholder gc5"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Moda #01</span></div>
+    </div>
+    <div class="gallery-item" data-cat="video" onclick="openLightbox('VÍDEO #02')">
+      <div class="g-placeholder gc6" style="display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(230,0,79,0.5)">▶</div>
+      <div class="g-overlay"><span class="g-overlay-text">Vídeo #02</span></div>
+    </div>
+    <div class="gallery-item" data-cat="foto" onclick="openLightbox('NOTURNO #01')">
+      <div class="g-placeholder gc7"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Noturno #01</span></div>
+    </div>
+    <div class="gallery-item" data-cat="ensaio" onclick="openLightbox('ENSAIO #01')">
+      <div class="g-placeholder gc8"></div>
+      <div class="g-overlay"><span class="g-overlay-text">Ensaio #01</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="about-visual reveal">
+    <div class="about-main-img"></div>
+    <div class="about-accent-box">
+      <div class="about-stat-number" id="years-counter">0</div>
+      <div class="about-stat-label">Anos de Experiência</div>
+    </div>
+  </div>
+  <div class="about-content reveal">
+    <div class="section-label">// 002 — Sobre</div>
+    <h2 class="section-title">QUEM<br>SOU EU</h2>
+    <p class="about-bio">
+      Olá! Sou um fotógrafo e filmmaker <strong>apaixonado por contar histórias</strong> através de imagens. Com olhar urbano e sensibilidade artística, mergulho em cada projeto buscando a autenticidade do momento.<br><br>
+      Da rua ao estúdio, do retrato ao vídeo — meu trabalho carrega uma <strong>identidade visual única</strong>, despojada e contemporânea. Acredito que cada click tem o poder de preservar emoções que palavras não alcançam.
+    </p>
+    <div class="skills-grid">
+      <div class="skill-item"><span class="skill-dot"></span>Fotografia Urbana</div>
+      <div class="skill-item"><span class="skill-dot"></span>Ensaios de Moda</div>
+      <div class="skill-item"><span class="skill-dot"></span>Vídeo & Reels</div>
+      <div class="skill-item"><span class="skill-dot"></span>Edição & Color</div>
+      <div class="skill-item"><span class="skill-dot"></span>Eventos</div>
+      <div class="skill-item"><span class="skill-dot"></span>Retratos</div>
+    </div>
+  </div>
+</section>
+
+<section id="clientes">
+  <div class="reveal">
+    <div class="section-label">// 003 — Clientes</div>
+    <h2 class="section-title">O QUE DIZEM</h2>
+  </div>
+  <div class="clients-grid reveal">
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar">A</div>
+        <div><div class="client-name">Ana Clara</div><div class="client-handle">@anaclara</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">Superou todas as expectativas! As fotos ficaram incríveis, captou minha essência de um jeito que eu nem sabia que era possível. Com certeza voltarei!</p>
+      <a href="#" class="client-link">Ver minhas fotos →</a>
+    </div>
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">R</div>
+        <div><div class="client-name">Rafael Matos</div><div class="client-handle">@rafaelmatos</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">O vídeo do nosso evento ficou simplesmente perfeito. Profissionalismo do início ao fim. Todo mundo amou o resultado final!</p>
+      <a href="#" class="client-link">Ver meu vídeo →</a>
+    </div>
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c)">M</div>
+        <div><div class="client-name">Mariana Souza</div><div class="client-handle">@marisouza</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">Ensaio de moda dos sonhos! A criatividade no enquadramento e na edição é incrível. Minhas fotos bombaram no Instagram!</p>
+      <a href="#" class="client-link">Ver ensaio →</a>
+    </div>
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">L</div>
+        <div><div class="client-name">Lucas Ferreira</div><div class="client-handle">@lucasferreira</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">Contratei para um ensaio urbano e o resultado ficou fora do comum. Olhar artístico incrível, totalmente fora do padrão convencional.</p>
+      <a href="#" class="client-link">Ver galeria →</a>
+    </div>
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar" style="background:linear-gradient(135deg,#fa709a,#fee140)">J</div>
+        <div><div class="client-name">Julia Lima</div><div class="client-handle">@julialima</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">Atenção aos detalhes e sensibilidade únicos. O ensaio de gestante ficou lindo demais — cada foto é uma obra de arte!</p>
+      <a href="#" class="client-link">Ver ensaio →</a>
+    </div>
+    <div class="client-card">
+      <div class="client-header">
+        <div class="client-avatar" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">P</div>
+        <div><div class="client-name">Pedro Alves</div><div class="client-handle">@pedroalves</div></div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="client-quote">Gravação do nosso casamento foi perfeita. Captou cada emoção do dia com muito cuidado e criatividade. Vale muito cada centavo!</p>
+      <a href="#" class="client-link">Ver vídeo →</a>
+    </div>
+  </div>
+</section>
+
+<section id="orcamento">
+  <div class="orc-layout">
+    <div class="orc-info reveal">
+      <div class="section-label">// 004 — Orçamento</div>
+      <h2 class="section-title">VAMOS<br>CRIAR<br>JUNTOS?</h2>
+      <p class="orc-tagline">Conte-me sobre seu projeto e vou retornar em até 24h com uma proposta personalizada para você.</p>
+      <div class="orc-contact-item"><span>EMAIL</span><span>seuemail@email.com</span></div>
+      <div class="orc-contact-item"><span>WHATS</span><span>(51) 9 9999-9999</span></div>
+      <div class="orc-contact-item"><span>INSTA</span><span>@seuperfil</span></div>
+    </div>
+    <div class="reveal">
+      <form onsubmit="submitForm(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome</label>
+            <input class="form-input" type="text" placeholder="Seu nome" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp</label>
+            <input class="form-input" type="tel" placeholder="(00) 9 0000-0000">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">E-mail</label>
+            <input class="form-input" type="email" placeholder="seuemail@email.com" required>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Tipo de Serviço</label>
+            <div class="services-check">
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Ensaio Fotográfico</label>
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Vídeo / Reel</label>
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Evento / Festa</label>
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Moda / Editorial</label>
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Casamento</label>
+              <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox">Outro</label>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Data Desejada</label>
+            <input class="form-input" type="date">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Orçamento Estimado</label>
+            <select class="form-select">
+              <option value="">Selecione uma faixa</option>
+              <option>Até R$ 500</option>
+              <option>R$ 500 – R$ 1.000</option>
+              <option>R$ 1.000 – R$ 2.500</option>
+              <option>R$ 2.500 – R$ 5.000</option>
+              <option>Acima de R$ 5.000</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Detalhes do Projeto</label>
+            <textarea class="form-textarea" placeholder="Me conte mais sobre o que você tem em mente..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Enviar Pedido de Orçamento</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">JOSEPH ARESÇO</div>
+  <ul class="footer-links">
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#orcamento">Orçamento</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Joseph Aresço — Todos os direitos reservados</div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('cursorFollower');
+let mx = 0, my = 0, fx = 0, fy = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+(function animFollower() {
+  fx += (mx - fx) * 0.12;
+  fy += (my - fy) * 0.12;
+  follower.style.left = fx + 'px';
+  follower.style.top = fy + 'px';
+  requestAnimationFrame(animFollower);
+})();
+
+// REVEAL ON SCROLL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// COUNTER
+function animateCounter(el, target, duration) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const t = setInterval(() => {
+    start += step;
+    if (start >= target) { el.textContent = target + '+'; clearInterval(t); }
+    else { el.textContent = Math.floor(start); }
+  }, 16);
+}
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(document.getElementById('years-counter'), 7, 1200);
+      counterObs.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+const counterEl = document.getElementById('years-counter');
+if (counterEl) counterObs.observe(counterEl);
+
+// GALLERY FILTER
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    const match = cat === 'todos' || item.dataset.cat === cat;
+    item.style.opacity = match ? '1' : '0.2';
+    item.style.pointerEvents = match ? 'all' : 'none';
+  });
+}
+
+// LIGHTBOX
+function openLightbox(title) {
+  document.getElementById('lightbox-content').textContent = title;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeLightbox();
+});
+
+// CHECK TOGGLE
+function toggleCheck(el) {
+  el.classList.toggle('selected');
+}
+
+// FORM SUBMIT
+function submitForm(e) {
+  e.preventDefault();
+  const notif = document.getElementById('notification');
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 3500);
+  e.target.reset();
+  document.querySelectorAll('.check-item').forEach(el => el.classList.remove('selected'));
+}
+</script>
+</body>
+</html>
